@@ -1,6 +1,7 @@
 <?php
 require('model.php');
 session_start();
+$connect = getUser();
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -12,29 +13,31 @@ session_start();
 </head>
 <body>
 
-<form action="">
-
-<h1> Me connecter </h1>
-<div>
-   <label for="identifiant">Votre Email</label>
-   <input type="email" id="" name="email">
- </div>
- <div>
-   <br><label for="pseudo"> Votre Pseudo</label></br>
-  <br> <input type="text" id="" name="pseudo"> </br>
- </div>
- <div>
-   <br><label for="mot de passe"> Votre Mot de passe</label></br>
-  <br> <input type="text" id="" name="mdp"> </br>
- </div>
-
-
- <div>
- <br>
-  <input type="submit" value="Se connecter" >
- </br>
- </div>
-</form>
-
+<?php
+    if(isset($connect)){   // Si l'utilisateur est connecté :
+        echo("connecté");
+    }else{  // Sinon :
+    ?>
+        <form action="">
+        <h1> Me connecter </h1>
+        <div>
+        <label for="identifiant">Votre Email</label>
+        <input type="email" id="" name="email">
+        </div>
+        <div>
+        <br><label for="pseudo"> Votre Pseudo</label></br>
+        <br> <input type="text" id="" name="pseudo"> </br>
+        </div>
+        <div>
+        <br><label for="mot de passe"> Votre Mot de passe</label></br>
+        <br> <input type="text" id="" name="mdp"> </br>
+        </div>
+        <div>
+        <br>
+        <input type="submit" value="Se connecter" >
+        </br>
+        </div>
+        </form>
+    <?php } ?>
 </body>
 </html>

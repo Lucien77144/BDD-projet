@@ -21,4 +21,9 @@ function getTitle(){
     }
     return $title;
 }
+
+function isAdmin(){
+    $db = connect();
+    $req = "SELECT id FROM utilisateur WHERE id={$_SESSION['user']}";
+}
 ?>
