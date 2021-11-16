@@ -26,4 +26,12 @@ function isAdmin(){
     $db = connect();
     $req = "SELECT id FROM utilisateur WHERE id={$_SESSION['user']}";
 }
+function comment(){
+    if(isset($connect)){//si un utilisateur est logué(connecté) il peut commenter  donc peut ecrire dans textarea
+    }else{ //il ne peut pas commenter donc ne pas accéder à textarea 
+
+    }
+}
+
+
 ?>
