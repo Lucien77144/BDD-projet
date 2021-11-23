@@ -42,9 +42,10 @@ function afficheBillet(){
 
     foreach($result as $row){
         echo "<div class='billet'>Date du post : {$row["date_billet"]}<br> Contenu <div>{$row["contenu_billet"]}</div>
+        <button id='affiche_com'>Afficher les commentaires</button>
         ";
         afficheCommentaire($row["id_billet"]);
-        echo "<button id='affiche_com'>Afficher les commentaires</button></div>";
+        echo "</div>";
     }
 }
 
@@ -56,9 +57,9 @@ function afficheCommentaire($id){
     $stmt->execute();
     $result=$stmt->fetchall(PDO::FETCH_ASSOC);
 
-    echo "<ul>";
+    echo "<ul class='commentaire'>";
     foreach($result as $row){
-        echo "<li class='commentaire'>Date du commentaire : {$row["date_com"]}<br> Contenu <div>{$row["contenu_com"]}</div>Auteur : {$row["pseudo"]}<br>
+        echo "<li>Date du commentaire : {$row["date_com"]}<br> Contenu <div>{$row["contenu_com"]}</div>Auteur : {$row["pseudo"]}<br>
         </li>";
     } 
     echo "</ul>";

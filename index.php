@@ -11,16 +11,17 @@ $connect = getUser();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= getTitle(); ?></title>
     <link rel="stylesheet" href="style.css">
-    <!-- <script>
-      document.addEventListener("DOMContentLoaded", function () {
+    <script>
+        document.addEventListener("DOMContentLoaded", function(){
+        document.querySelector("#affiche_com").addEventListener(["click"],e=>{
+            e.currentTarget.nextElementSibling.style.display="block";
+            e.currentTarget.remove();
+            console.log("cc")
+        });
 
-document.querySelector("").addEventListener(["click"],e=>{
-    document.querySelectorAll("").style.display="block";
+
 });
-
-
-});
-</script> -->
+</script>
 </head>
 <body>
 
