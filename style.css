@@ -1,14 +1,20 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Hind:wght@400;700&family=Roboto&display=swap');
+
 body{
     margin: 0;
+    font-family: 'Roboto', sans-serif;
 }
 header{
     text-align: center;
     display: flex;
     justify-content: space-around;
     background-color: rgb(30, 88, 88);
+    padding: 10px;
 }
 h1{
     margin: 0;
+    font-family: "Montserrat";
 }
 form{
     display: flex;
@@ -16,12 +22,73 @@ form{
     justify-content: space-around;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
+.boutton{
+    background-color: rgb(255, 161, 37);
+    color: antiquewhite;
+}
 div{
     margin: 2%;
 }
 
 .commentaire{
-    background-color: grey;
-    margin: 5px;
+    background-color: rgb(46, 45, 45);
+    /* margin: 5px; */
     display: none;
+    color: antiquewhite;
+    font-family: 'Roboto', sans-serif;
+}
+
+.commenter, .voirBillet{
+    flex-direction: column;
+    align-items: flex-start;
+    margin: 5px;
+}
+
+.addBillet{
+    flex-direction: column;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.billet{
+    border: 2px black solid;
+    border-radius: 10px;
+}
+
+h3{
+    font-size: 0.75rem;
+    color: white;
+    background-color: rgb(36, 36, 36);
+    padding: 5px 10px 5px 10px;
+    width: fit-content;
+    width: -moz-fit-content;
+}
+
+h1, h2, h3, p, input, button{
+    font-family: 'Roboto', sans-serif;
+}
+
+li{
+    position: relative;
+    margin-bottom: 20px;
+}
+
+li::before{
+    content: "";
+    position: absolute;
+    width: 75%;
+    height: 2px;
+    background-color: white;
+    bottom: -5px;
+}
+
+.admin{
+    font-size: 1rem;
+    color: red;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: rgb(30, 88, 88);
+    padding: 10px;
+    border-radius: 0px 0px 5px 0px;
 }
