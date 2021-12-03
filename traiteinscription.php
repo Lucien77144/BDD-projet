@@ -22,7 +22,12 @@ if($result == NULL){
     $stmt -> bindValue(':email', $email, PDO::PARAM_STR);
     $stmt -> bindValue(':mdp', $pw, PDO::PARAM_STR);
     $stmt -> execute();
-}else($result!= NULL){
+    session_start();
+    $_SESSION['user'] = $pseudo;
+    $_SESSION['mail'] = $email;
+    $_SESSION['id'] = $mdp;
+    header("Location: index.php");
+}else{
     header("Location: index.php?erreur=exist");
 }
 

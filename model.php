@@ -11,6 +11,12 @@ function getUser(){
     }
 }
 
+function getIdUser(){
+    if(isset($_SESSION['id'])){
+        return $_SESSION['id'];
+    }
+}
+
 function getTitle(){
     $user = getUser();
     if(isset($user)){
@@ -26,13 +32,6 @@ function isAdmin(){
     $req = "SELECT id FROM utilisateur WHERE id={$_SESSION['id']}";
 }
 
-function comment(){
-    if(isset($connect)){//si un utilisateur est logué(connecté) il peut commenter  donc peut ecrire dans textarea
- //peut commenter 
-    }else{ //il ne peut pas commenter donc ne pas accéder à textarea juste masquer et afficher les commentaires 
-// afficheBillet() et afficheCommentaire() c'est tout 
-    }
-}
 function afficheBillet(){
     $db = connect();
     $req="SELECT * FROM billet ORDER BY id_billet DESC LIMIT 3";
@@ -40,11 +39,13 @@ function afficheBillet(){
     $stmt->execute();
     $result=$stmt->fetchall(PDO::FETCH_ASSOC);
 
+    $user = getUser();
     foreach($result as $row){
-        echo "<div class='billet'>Date du post : {$row["date_billet"]}<br> Contenu <div>{$row["contenu_billet"]}</div>
-        <button id='affiche_com'>Afficher les commentaires</button>
-        ";
+        echo "<div class='billet'>Date du post : {$row["date_billet"]}<br> Contenu <div>{$row["contenu_billet"]}</div>";
         afficheCommentaire($row["id_billet"]);
+        if(isset($user)){
+            commenter($row["id_billet"]);
+        }
         echo "</div>";
     }
 }
@@ -57,12 +58,23 @@ function afficheCommentaire($id){
     $stmt->execute();
     $result=$stmt->fetchall(PDO::FETCH_ASSOC);
 
-    echo "<ul class='commentaire'>";
-    foreach($result as $row){
-        echo "<li>Date du commentaire : {$row["date_com"]}<br> Contenu <div>{$row["contenu_com"]}</div>Auteur : {$row["pseudo"]}<br>
-        </li>";
-    } 
-    echo "</ul>";
+    if($result != NULL){
+        echo "<button id='affiche_com'>Afficher les commentaires</button><ul class='commentaire'>";
+        foreach($result as $row){
+            echo "<li>Date du commentaire : {$row["date_com"]}<br> Contenu <div>{$row["contenu_com"]}</div>Auteur : {$row["pseudo"]}<br>
+            </li>";
+        } 
+        echo "</ul>";
+    }
+}
+function commenter($billet){
+    echo
+    "<form action='traitecommentaire.php' method='POST'>
+        <input type='hidden' value='{$billet}' name='billet' />
+        <label for='commentaire'>Commenter</label>
+        <textarea  name='commentaire' rows='5' cols='33'></textarea>
+        <input type='submit'>
+    </form>";
 }
 
 ?>

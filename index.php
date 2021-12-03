@@ -13,13 +13,13 @@ $connect = getUser();
     <link rel="stylesheet" href="style.css">
     <script>
         document.addEventListener("DOMContentLoaded", function(){
-        document.querySelector("#affiche_com").addEventListener(["click"],e=>{
-            e.currentTarget.nextElementSibling.style.display="block";
-            e.currentTarget.remove();
-            console.log("cc")
+        document.querySelectorAll("#affiche_com").forEach(e =>{
+            e.addEventListener("click", () => {
+                console.log(e.nextElementSibling)
+                e.nextElementSibling.style.display="block";
+                e.remove();
+            });
         });
-
-
 });
 </script>
 </head>
