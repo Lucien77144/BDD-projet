@@ -52,7 +52,7 @@
                 </div>
                 <div>
                     <br><br>
-                    <input type="submit" value="S'inscrire">
+                    <input type="submit" value="S'inscrire"  class="boutton">
                 </div>
             </form>
 
@@ -69,9 +69,9 @@
     <form action='index.php'>
         <?php if(!isset($_GET['view'])){ ?>
             <input type="hidden" name="view" value="archives">
-            <input type='submit' value='Archives'>
+            <input type='submit' value='Archives' class="archiveretour">
         <?php }else{ ?>
-            <input type='submit' value='Accueil'>
+            <input type='submit' value='Accueil'class="archiveretour">
         <?php } ?>
     </form>
 
