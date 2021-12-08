@@ -1,3 +1,13 @@
+<!-- --------------------------------------------------------- -->
+
+<!-- INTERFACE ADMINISTRATEUR -->
+<!-- LOGIN: admin | MDP: admin -->
+
+<!-- INTERFACE UTILISATEUR -->
+<!-- LOGIN: toto | MDP: toto -->
+
+<!-- --------------------------------------------------------- -->
+
 <?php
 require('model.php');
 session_start();
@@ -9,8 +19,14 @@ $connect = getUser();
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Title personnalisé par le pseudo de l'utilisateur -->
     <title><?= getTitle(); ?></title>
+    <!--  -->
+
     <link rel="stylesheet" href="style.css">
+
+    <!-- JAVASCRIPT -->
     <script>
         document.addEventListener("DOMContentLoaded", function(){
             document.querySelectorAll("#affiche_com").forEach(e =>{
@@ -26,36 +42,31 @@ $connect = getUser();
             });
         });
     </script>
+    <!--  -->
+
 </head>
 <body>
 
-<?php
-    include("view/header.php");
-?>
+    <?php
+        // Afficher le header (bandeau de connexion-deconnexion / inscription / archives)
+        include("view/header.php");
+    ?>
 
-<section class="nvBillet">
-        <?php
-            if(isadmin()){
-                include("view/addbillet.php");
+    <main>
+        <?php 
+            // Charger la page en fonction de la view indiquée en GET
+            if(isset($_GET['view']) && $_GET["view"] == "archives"){ // Afficher les archives
+                afficheArchives();
+            }else if(isset($_GET['view']) && $_GET["view"] == "billet"){ // Afficher un billet unique
+                afficheBillet(htmlspecialchars($_GET["id"]));
+            }else{ // Sinon :
+                if(isadmin()){ // Si l'utilisateur est admin :
+                    include("view/addbillet.php"); // Ajouter la possibiliter de créer un nouveau billet
+                }
+                afficheAllBillets(); // Afficher les trois derniers billets
             }
         ?>
-</section>
+    </main>
 
-<section>
-    <?php
-    if(isset($_GET['view']) && $_GET["view"] == "archives"){
-        afficheArchives();
-    }else if(isset($_GET['view']) && $_GET["view"] == "billet"){
-        afficheBillet(htmlspecialchars($_GET["id"]));
-    }else{
-        afficheAllBillets();
-    }
-    ?>
-</section> <!-- il y aura le billet puis pour acceder au commentaire il faut appuyer sur le bouton -->
-    
-
-    <div><!-- parti pour la page "archive" la consigne dit : - Par défaut sur la page de garde du site les 3 derniers billets apparaissent. L'ensemble des billets est
-également consultable dans une section "archives".  -->
-    </div>
 </body>
 </html>

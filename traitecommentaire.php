@@ -7,6 +7,8 @@ $id = getIdUser();
 
 $com = htmlspecialchars($_POST['commentaire']);
 $billet = $_POST['billet'];
-uploadCom($com, $billet, $id);
+
+// le $_POST['action'] permet de transmettre la page emetrice de la demande
+uploadCom($com, $billet, $id, $_POST['action']);
 
 ?>
