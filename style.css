@@ -1,79 +1,109 @@
-
 @import url('https://fonts.googleapis.com/css2?family=Hind:wght@400;700&family=Roboto&display=swap');
 
-body{
+body {
     margin: 0;
     font-family: 'Roboto', sans-serif;
+    background-color: #f3e6c4;
 }
-header{
+
+header {
     text-align: center;
     display: flex;
     justify-content: space-around;
-    background-color: rgb(30, 88, 88);
+    background-color: #dac881;
     padding: 10px;
 }
-h1{
-    margin: 0;
+
+h1 {
+    margin: 0 0 2rem 0;
     font-family: "Montserrat";
+    color: #d69a69;
 }
-form{
+
+form {
     display: flex;
     align-items: flex-end;
     justify-content: space-around;
-    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    flex-wrap: wrap;
+    font-family: 'Roboto'
 }
-.boutton{
-    background-color: rgb(255, 161, 37);
-    color: antiquewhite;
+
+.boutton {
+    background-color: #d69a69;
+    color: rgb(255, 255, 255);
+    font-size: 1rem;
+    padding: 0.4rem 0.5rem;
+    border-radius: 5px;
+    border: 0px;
+    font-weight: 500;
+    animation: pulse-orange 2s infinite;
+    transition: 0.2s ease-in-out;
 }
-div{
+
+
+.boutton:hover {
+    padding: 0.3rem 0.4rem;
+}
+
+div {
     margin: 2%;
 }
 
-.commentaire{
-    background-color: rgb(46, 45, 45);
-    /* margin: 5px; */
-    display: none;
-    color: antiquewhite;
-    font-family: 'Roboto', sans-serif;
-}
-
-.commenter, .voirBillet{
-    flex-direction: column;
-    align-items: flex-start;
-    margin: 5px;
-}
-
-.addBillet{
-    flex-direction: column;
-    align-items: center;
-    margin-top: 10px;
-}
-
-.billet{
-    border: 2px black solid;
+.archiveretour {
+    padding: 0.5rem 1rem;
     border-radius: 10px;
+    border: 0px;
+    position: absolute;
+    top: 10px;
+    right: 40px;
 }
 
-h3{
+.billet {
+    border: 7px #d69a69 solid;
+    border-radius: 10px;
+    width: 40%;
+    padding: 0;
+
+
+}
+h3 {
     font-size: 0.75rem;
     color: white;
-    background-color: rgb(36, 36, 36);
+    margin-top: -1px;
+    margin-left: -1px;
+    background-color: #d69a69;
     padding: 5px 10px 5px 10px;
     width: fit-content;
+ 
+    border-radius: 3px;
     width: -moz-fit-content;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500;
 }
 
-h1, h2, h3, p, input, button{
-    font-family: 'Roboto', sans-serif;
-}
-
-li{
+li {
     position: relative;
     margin-bottom: 20px;
 }
 
-li::before{
+.commentaire {
+ 
+    /* margin: 5px; */
+  
+    display:none;
+    color: rgb(54, 50, 45);
+    font-family: 'Roboto', sans-serif;
+}
+
+
+.nvBillet{
+display: flex;
+justify-content: center;
+margin: 2rem;
+
+}
+
+li::before {
     content: "";
     position: absolute;
     width: 75%;
@@ -82,7 +112,27 @@ li::before{
     bottom: -5px;
 }
 
-.admin{
+
+
+
+.commenter,
+.voirBillet {
+    flex-direction: column;
+    align-items: flex-start;
+    margin: 5px;
+}
+
+
+.addBillet {
+    flex-direction: column;
+    align-items: center;
+    margin-top: 10px;
+}
+
+
+
+
+.admin {
     font-size: 1rem;
     color: red;
     position: fixed;
@@ -91,4 +141,21 @@ li::before{
     background-color: rgb(30, 88, 88);
     padding: 10px;
     border-radius: 0px 0px 5px 0px;
+}
+
+@keyframes pulse-orange {
+    0% {
+        transform: scale(0.95);
+        box-shadow: 0 0 0 0 rgba(255, 121, 63, 0.7);
+    }
+
+    70% {
+        transform: scale(1);
+        box-shadow: 0 0 0 10px rgba(255, 121, 63, 0);
+    }
+
+    100% {
+        transform: scale(0.95);
+        box-shadow: 0 0 0 0 rgba(255, 121, 63, 0);
+    }
 }
