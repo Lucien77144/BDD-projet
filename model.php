@@ -146,7 +146,7 @@ function afficheBillet($id){
     $stmt -> bindValue(1, $id, PDO::PARAM_INT);
     $stmt -> execute();
     while($result = $stmt->fetch(PDO::FETCH_ASSOC)){
-        echo "<div class='billet'><h3>Date du post : {$result["date_billet"]}</h3><p>{$result["contenu_billet"]}</p>";
+        echo "<div class='billet billetUnique'><h3>Date du post : {$result["date_billet"]}</h3><p>{$result["contenu_billet"]}</p>";
 
         // Afficher le champs pour ajouter des commentaires : 
         commenter($result["id_billet"], "index.php?view=billet&id={$result["id_billet"]}");
