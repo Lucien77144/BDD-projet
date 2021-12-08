@@ -133,7 +133,7 @@ function afficheAllBillets(){
             }
 
             // Afficher tout les commentaires liés à ce billet :
-            afficheCommentaire($row["id_billet"]);
+            afficheCommentaire($row["id_billet"], "index.php");
         echo "</div>";
     }
 }
@@ -146,14 +146,14 @@ function afficheBillet($id){
     $stmt -> bindValue(1, $id, PDO::PARAM_INT);
     $stmt -> execute();
     while($result = $stmt->fetch(PDO::FETCH_ASSOC)){
-        echo "<div class='billet billetUnique'><h3>Date du post : {$result["date_billet"]}</h3><p>{$result["contenu_billet"]}</p>";
+        echo "<div class='billet billetUnique'><h3>Date du post : {$result["date_billet"]}</h3><p>{$result["contenu_billet"]}</p></div>";
 
         // Afficher le champs pour ajouter des commentaires : 
         commenter($result["id_billet"], "index.php?view=billet&id={$result["id_billet"]}");
+        afficheCommentaire($id, "index.php?view=billet&id={$result["id_billet"]}");
     }
 
     // Afficher tout les commentaires liés au billet :
-    afficheCommentaire($id);
 }
 
 // Afficher les archives de tout les billets (COMME ARCHIVES : LES AFFICHER DU PLUS ANCIEN AU PLUS RECENT)
@@ -169,7 +169,7 @@ function afficheArchives(){
         echo "<div class='billet'><h3>Date du post : {$row["date_billet"]}</h3><p>{$row["contenu_billet"]}</p>";
 
         // Afficher tout les commentaires liés au billet :
-        afficheCommentaire($row["id_billet"]);
+        afficheCommentaire($row["id_billet"], "index.php?view=archives");
         if(isset($user)){
             ?>
             <form action="index.php" class="voirBillet">
@@ -187,7 +187,7 @@ function afficheArchives(){
 }
 
 // Fonction d'affichage de tout les commentaires d'un billet
-function afficheCommentaire($id){
+function afficheCommentaire($id, $action){
     $db = connect();
     $req="SELECT * FROM commentaire, utilisateur WHERE ext_billet=? AND ext_utilisateur=id ORDER BY id_com DESC";
     $stmt=$db->prepare($req);
@@ -198,6 +198,14 @@ function afficheCommentaire($id){
     if($result != NULL){
         echo "<button id='affiche_com'>Afficher les commentaires</button><ul class='commentaire'>";
         foreach($result as $row){
+            if(isAdmin()){
+                echo 
+                "<form action='deletecom.php' class='delete' method='POST'>
+                    <input type='hidden' value='{$row["id_com"]}' name='id'>
+                    <input type='hidden' value='{$action}' name='action'>
+                    <input type='submit' value='Supprimer'>
+                </form>";
+            }
             echo "<li>Date du commentaire : {$row["date_com"]}<br><div>{$row["contenu_com"]}</div>Auteur : {$row["pseudo"]}<br>
             </li>";
         } 
@@ -242,6 +250,16 @@ function uploadBillet($content){
     $stmt -> bindValue(':content', $content, PDO::PARAM_STR);
     $stmt -> execute();
     header("Location: index.php");
+}
+
+// Fonction de supression d'un commentaire
+function deleteCom($id, $action){
+    $db = connect();
+    $req = "DELETE FROM `commentaire` WHERE `commentaire`.`id_com` = ?";
+    $stmt = $db -> prepare($req);
+    $stmt -> bindValue(1, $_POST['id'], PDO::PARAM_STR);
+    $stmt -> execute();
+    header("Location: {$action}");
 }
 
 ?>
