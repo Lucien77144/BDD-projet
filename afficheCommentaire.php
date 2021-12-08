@@ -1,4 +1,4 @@
 <?php
 require("model.php");
-afficheCommentaire($_GET['id']);
+afficheCommentaire(parseInt($_GET['id'])); 
 ?>

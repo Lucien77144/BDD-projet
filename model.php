@@ -1,10 +1,12 @@
 <?php
 
+// lien avec la base de donnée
 function connect(){
     $db= new PDO ('mysql:host=localhost;dbname=tpfinal;port3306;charset=utf8','root', '', array( PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
     return $db;
 }
 
+// Fonction de connexion
 function login($login, $pw){
 
     $db = connect();
@@ -24,17 +26,21 @@ function login($login, $pw){
             $_SESSION['id'] = $result['id'];
             header("Location: index.php");
         }else{
+            // Renvoie du message d'erreur "mot de passe incorrect"
             header("Location: index.php?erreur=pw");
         }
     }else{
+        // Renvoie du message d'erreur "identifiant incorrect"
         header("Location: index.php?erreur=id");
     }
 }
 
+// Fonction d'inscription
 function inscription($pseudo, $email, $pw){
 
     $db = connect();
 
+    // Requête de vérification de l'existence de l'utilisateur 
     $req = "SELECT * FROM utilisateur WHERE `email`=:email OR `pseudo`=:pseudo";
     $stmt = $db -> prepare($req);
     $stmt -> bindValue(':email', $email, PDO::PARAM_STR);
@@ -43,32 +49,36 @@ function inscription($pseudo, $email, $pw){
     
     $result = $stmt -> fetch(PDO::FETCH_ASSOC);
     
-    if($result == NULL){
+    if($result == NULL){ // Si l'utilisateur n'existe pas :
         $req = "INSERT INTO `utilisateur` (`id`, `pseudo`, `email`, `mdp`) VALUES (NULL, :pseudo, :email, :mdp)";
         $stmt = $db -> prepare($req);
         $stmt -> bindValue(':pseudo', $pseudo, PDO::PARAM_STR);
         $stmt -> bindValue(':email', $email, PDO::PARAM_STR);
         $stmt -> bindValue(':mdp', password_hash($pw, PASSWORD_DEFAULT), PDO::PARAM_STR);
         $stmt -> execute();
+        
+        // Connecter automatiquement l'utilisateur :
         login($pseudo, $pw);
-        header("Location: index.php");
-    }else{
+    }else{ // Si l'utilisateur existe, renvoyer une erreur :
         header("Location: index.php?erreur=exist");
     }
 }
 
+// Obtenir le pseudo de l'utilisateur
 function getUser(){
     if(isset($_SESSION['user'])){
         return $_SESSION['user'];
     }
 }
 
+// Obtenir l'ID de l'utilisateur 
 function getIdUser(){
     if(isset($_SESSION['id'])){
         return $_SESSION['id'];
     }
 }
 
+// Modifier le title de la page si l'utilisateur est connecté 
 function getTitle(){
     $user = getUser();
     if(isset($user)){
@@ -79,6 +89,7 @@ function getTitle(){
     return $title;
 }
 
+// Verifier si l'utilisateur connecté est administrateur
 function isAdmin(){
     $db = connect();
     $id = getIdUser();
@@ -93,7 +104,7 @@ function isAdmin(){
     }
 }
 
-
+// Afficher les trois derniers billets 
 function afficheAllBillets(){
     $db = connect();
     $req="SELECT * FROM billet ORDER BY id_billet DESC LIMIT 3";
@@ -105,21 +116,29 @@ function afficheAllBillets(){
     foreach($result as $row){
         echo "<div class='billet'><h3>Date du post : {$row["date_billet"]}</h3><p>{$row["contenu_billet"]}</p>";
         
-        if(isset($user)){
-            ?>
-            <form action="index.php" class="voirBillet">
-                <input type="hidden" name="view" value="billet">
-                <input type="hidden" name="id" value="<?= $row["id_billet"] ?>">
-                <input type="submit" value="Voir le billet">
-            </form>
-            <?php
-            commenter($row["id_billet"]);
-        }
-        afficheCommentaire($row["id_billet"]);
+            if(isset($user)){ // Si l'utilisateur est connecté :
+
+                // Afficher un bouton pour voir chaque billet individuellement
+                ?>
+                <form action="index.php" class="voirBillet">
+                    <input type="hidden" name="view" value="billet">
+                    <input type="hidden" name="id" value="<?= $row["id_billet"] ?>">
+                    <input type="submit" value="Voir le billet">
+                </form>
+                <?php
+
+                // Afficher le champs pour ajouter des commentaires : 
+                commenter($row["id_billet"], "index.php");
+
+            }
+
+            // Afficher tout les commentaires liés à ce billet :
+            afficheCommentaire($row["id_billet"]);
         echo "</div>";
     }
 }
 
+// Afficher un billet individuellement (CETTE FONCTION EST APELLEE UNIQUEMENT PAR DES UTILISATEURS CONNECTES)
 function afficheBillet($id){
     $db = connect();
     $req = "SELECT * FROM billet WHERE id_billet=?";
@@ -128,10 +147,16 @@ function afficheBillet($id){
     $stmt -> execute();
     while($result = $stmt->fetch(PDO::FETCH_ASSOC)){
         echo "<div class='billet'><h3>Date du post : {$result["date_billet"]}</h3><p>{$result["contenu_billet"]}</p>";
+
+        // Afficher le champs pour ajouter des commentaires : 
+        commenter($result["id_billet"], "index.php?view=billet&id={$result["id_billet"]}");
     }
+
+    // Afficher tout les commentaires liés au billet :
     afficheCommentaire($id);
 }
 
+// Afficher les archives de tout les billets (COMME ARCHIVES : LES AFFICHER DU PLUS ANCIEN AU PLUS RECENT)
 function afficheArchives(){
     $db = connect();
     $req="SELECT * FROM billet ORDER BY id_billet ASC";
@@ -142,6 +167,8 @@ function afficheArchives(){
     $user = getUser();
     foreach($result as $row){
         echo "<div class='billet'><h3>Date du post : {$row["date_billet"]}</h3><p>{$row["contenu_billet"]}</p>";
+
+        // Afficher tout les commentaires liés au billet :
         afficheCommentaire($row["id_billet"]);
         if(isset($user)){
             ?>
@@ -151,12 +178,15 @@ function afficheArchives(){
                 <input type="submit" value="Voir le billet">
             </form>
             <?php
-            commenter($row["id_billet"]);
+            
+            // Afficher le champs pour ajouter des commentaires : 
+            commenter($row["id_billet"], "index.php?view=archives");
         }
         echo "</div>";
     }
 }
 
+// Fonction d'affichage de tout les commentaires d'un billet
 function afficheCommentaire($id){
     $db = connect();
     $req="SELECT * FROM commentaire, utilisateur WHERE ext_billet=? AND ext_utilisateur=id ORDER BY id_com DESC";
@@ -175,17 +205,20 @@ function afficheCommentaire($id){
     }
 }
 
-function commenter($billet){
+// Fonction d'affichage du formulaire pour ajouter des commentaires
+function commenter($billet, $action){
     echo
     "<form class='commenter' action='traitecommentaire.php' method='POST'>
         <input type='hidden' value='{$billet}' name='billet' />
+        <input type='hidden' value='{$action}' name='action' />
         <label for='commentaire'>Commenter</label>
         <textarea  name='commentaire' rows='5' cols='33'></textarea>
         <input type='submit'>
     </form>";
 }
 
-function uploadCom($com, $billet, $id){
+// Fonction de publication des commentaires (avec redirection sur la page emetrice)
+function uploadCom($com, $billet, $id, $action){
     
     $db = connect();
 
@@ -196,9 +229,10 @@ function uploadCom($com, $billet, $id){
     $stmt -> bindValue(':id_utilisateur', $id, PDO::PARAM_STR);
     $stmt -> execute();
 
-    header("Location: index.php");
+    header("Location: {$action}");
 }
 
+// Fonction de publication d'un billet
 function uploadBillet($content){
     
     $db = connect();
