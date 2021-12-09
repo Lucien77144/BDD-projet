@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le : mer. 08 déc. 2021 à 11:55
+-- Généré le : jeu. 09 déc. 2021 à 20:18
 -- Version du serveur :  10.4.18-MariaDB
 -- Version de PHP : 8.0.5
 
@@ -101,8 +101,7 @@ INSERT INTO `commentaire` (`id_com`, `date_com`, `contenu_com`, `ext_billet`, `e
 (36, '2021-12-08', 'coucou', 8, 1),
 (37, '2021-12-08', 'test cc\r\n', 10, 1),
 (38, '2021-12-08', 'test coucou', 10, 1),
-(39, '2021-12-08', 'test1', 10, 1),
-(40, '2021-12-08', 'cc', 11, 1);
+(39, '2021-12-08', 'test1', 10, 1);
 
 -- --------------------------------------------------------
 
@@ -168,7 +167,7 @@ ALTER TABLE `billet`
 -- AUTO_INCREMENT pour la table `commentaire`
 --
 ALTER TABLE `commentaire`
-  MODIFY `id_com` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
+  MODIFY `id_com` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
 
 --
 -- AUTO_INCREMENT pour la table `utilisateur`
