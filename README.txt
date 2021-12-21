@@ -8,3 +8,7 @@ Compte utilisateur :
 
 URL du blog :
 	https://perso-etudiant.u-pem.fr/~boisseausable/miniBlog/
+
+Membres du Groupe :
+	Clémentine GILAMA - TP B
+	Lucien BOISSEAU SABLE - TP B
